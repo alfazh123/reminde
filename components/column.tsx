@@ -6,6 +6,7 @@ import { TableRowProps } from "@/app/type"
 import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from "./ui/dropdown-menu"
 import { EllipsisVertical } from "lucide-react"
 import { useEffect, useRef, useState } from "react"
+import DetailInfo from "./detail-info";
 
 const columnHelper = createColumnHelper<DataTableFeatures, TableRowProps>()
 
@@ -147,27 +148,32 @@ export const columns = (onDelete: (id: string) => void) => columnHelper.columns(
             };
 
             return (
-                <span className="flex items-center justify-center gap-2">
-                    <DropdownMenu>
-                        <DropdownMenuTrigger className={`flex items-center justify-center rounded-md p-1 ${isDue ? "bg-red-500 text-white animate-pulse" : ""}`}>
-                            <EllipsisVertical className="h-4 w-4" />
-                        </DropdownMenuTrigger>
-                        <DropdownMenuContent>
-                            <DropdownMenuItem onClick={() => console.log("Detail clicked")}>
-                                Detail
-                            </DropdownMenuItem>
-                            {isDue && (
-                            <DropdownMenuItem onClick={handleStopAlarm}>
-                                Stop
-                            </DropdownMenuItem>
-                            )}
-                            <DropdownMenuItem className="text-destructive focus:text-destructive" onClick={() => onDelete(row.original.id)}>
-                                Remove
-                            </DropdownMenuItem>
-                        </DropdownMenuContent>
-                    </DropdownMenu>
-                </span>
-            )
+				<span className="flex items-center justify-center gap-2">
+					<DropdownMenu>
+						<DropdownMenuTrigger
+							className={`flex items-center justify-center rounded-md p-1 ${isDue ? "bg-red-500 text-white animate-pulse" : ""}`}>
+							<EllipsisVertical className="h-4 w-4" />
+						</DropdownMenuTrigger>
+						<DropdownMenuContent>
+							{/* <DropdownMenuItem
+								onClick={() => console.log("Detail clicked")}>
+								
+							</DropdownMenuItem> */}
+							<DetailInfo data={row.original} />
+							{isDue && (
+								<DropdownMenuItem onClick={handleStopAlarm}>
+									Stop
+								</DropdownMenuItem>
+							)}
+							<DropdownMenuItem
+								className="text-destructive focus:text-destructive"
+								onClick={() => onDelete(row.original.id)}>
+								Remove
+							</DropdownMenuItem>
+						</DropdownMenuContent>
+					</DropdownMenu>
+				</span>
+			);
         }
     })
 ])

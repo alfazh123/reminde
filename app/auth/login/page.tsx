@@ -7,6 +7,7 @@ import { doc, getDoc } from "firebase/firestore";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
 import { db } from "../../firebase";
+import HeaderIcons from "@/components/header-icons";
 
 export default function Login() {
     const [username, setUsername] = useState("");
@@ -55,60 +56,70 @@ export default function Login() {
     }
 
     return (
-        <div className="flex flex-col justify-center items-center min-h-screen">
-            <FieldGroup>
-                {/* 1. Tambahkan onSubmit={handleSubmit} di sini */}
-                <form className="w-full max-w-md p-8 bg-white rounded-lg shadow-md border" onSubmit={handleSubmit}>
-                    <FieldSet>
-                        <FieldLegend>Login</FieldLegend>
-                        <FieldDescription>
-                        Start monitoring
-                        </FieldDescription>
+		<div className="flex flex-col justify-center items-center min-h-screen w-full">
+			<HeaderIcons />
+			<FieldGroup className="w-full flex flex-col justify-center items-center">
+				{/* 1. Tambahkan onSubmit={handleSubmit} di sini */}
+				<form
+					className="w-full max-w-md p-8 bg-white rounded-lg shadow-md border"
+					onSubmit={handleSubmit}>
+					<FieldSet>
+						<FieldLegend>Login</FieldLegend>
+						<FieldDescription>Start monitoring</FieldDescription>
 
-                        {/* Tampilkan pesan error jika ada */}
-                        {error && (
-                            <div className="p-3 mb-4 text-sm text-red-700 bg-red-100 rounded-lg">
-                                {error}
-                            </div>
-                        )}
+						{/* Tampilkan pesan error jika ada */}
+						{error && (
+							<div className="p-3 mb-4 text-sm text-red-700 bg-red-100 rounded-lg">
+								{error}
+							</div>
+						)}
 
-                        <FieldGroup>
-                        <Field>
-                            <FieldLabel htmlFor="username">
-                            Username
-                            </FieldLabel>
-                            <Input
-                            id="username"
-                            placeholder="Enter your username"
-                            value={username}
-                            onChange={(e) => setUsername(e.target.value)}
-                            required
-                            />
-                        </Field>
-                        <Field>
-                            <FieldLabel htmlFor="password">
-                            Password
-                            </FieldLabel>
-                            <Input
-                            id="password"
-                            placeholder="Please enter your password"
-                            type="password"
-                            value={password}
-                            onChange={(e) => setPassword(e.target.value)}
-                            required
-                            />
-                        </Field>
-                        </FieldGroup>
-                    </FieldSet>
-                    
-                    <Field orientation="horizontal" className="mt-4">
-                        {/* 2. Hapus onClick yang salah, biarkan type="submit" memicu form */}
-                        <Button type="submit" className="w-full" disabled={loading}>
-                            {loading ? "Memeriksa..." : "Login"}
-                        </Button>
-                    </Field>
-                </form>
-            </FieldGroup>
-        </div>
-    )
+						<FieldGroup>
+							<Field>
+								<FieldLabel htmlFor="username">
+									Username
+								</FieldLabel>
+								<Input
+									id="username"
+									placeholder="Enter your username"
+									value={username}
+									onChange={(e) =>
+										setUsername(e.target.value)
+									}
+									required
+								/>
+							</Field>
+							<Field>
+								<FieldLabel htmlFor="password">
+									Password
+								</FieldLabel>
+								<Input
+									id="password"
+									placeholder="Please enter your password"
+									type="password"
+									value={password}
+									onChange={(e) =>
+										setPassword(e.target.value)
+									}
+									required
+								/>
+							</Field>
+						</FieldGroup>
+					</FieldSet>
+
+					<Field
+						orientation="horizontal"
+						className="mt-4">
+						{/* 2. Hapus onClick yang salah, biarkan type="submit" memicu form */}
+						<Button
+							type="submit"
+							className="w-full"
+							disabled={loading}>
+							{loading ? "Memeriksa..." : "Login"}
+						</Button>
+					</Field>
+				</form>
+			</FieldGroup>
+		</div>
+	);
 }

@@ -5,13 +5,16 @@ import { TableRowProps } from "@/app/type";
 import { columns } from "@/components/column";
 import { DataTable } from "@/components/data-table";
 import FormInfus from "@/components/form-infus";
+import HeaderIcons from "@/components/header-icons";
 import { Button } from "@/components/ui/button";
 import { collection, deleteDoc, doc, onSnapshot } from "firebase/firestore";
+import Image from "next/image";
 import { useParams, useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
 
 export default function Dashboard() {
     const [isInfusFormOpen, setIsInfusFormOpen] = useState(false);
+    const [isDetailInfoOpen, setIsDetailInfoOpen] = useState(false);
     const [infusData, setInfusData] = useState<TableRowProps[]>([]);
     const router = useRouter();
 
@@ -78,21 +81,25 @@ export default function Dashboard() {
     }, [level]);
 
     return (
-        <div className="flex flex-col gap-4 w-full min-h-[60vh] justify-center items-center">
+		<div className="flex flex-col gap-4 w-full min-h-[60vh] justify-center items-center">
+			<HeaderIcons />
+			{/* <h1 className="text-2xl font-bold text-center">SIMPAN RINDU</h1> */}
+			<div className="border p-2 rounded-lg w-full max-w-6xl mx-2">
+				<DataTable
+					columns={columns(handleDelete)}
+					data={infusData}
+					handleOpenInfusForm={handleOpenInfusForm}
+					levelValue={parseInt(level)}
+				/>
+			</div>
 
-            {/* <Button variant="default" className="w-fit" onClick={handleOpenInfusForm}>
-                Add Data Infus
-            </Button> */}
-            <h1 className="text-2xl font-bold text-center">
-                SIMPAN RINDU
-            </h1>
-            <div className="border p-4 rounded-lg max-w-7xl">
-                <DataTable columns={columns(handleDelete)} data={infusData} handleOpenInfusForm={handleOpenInfusForm} />
-            </div>
-
-            {isInfusFormOpen && (
-                <FormInfus isOpen={isInfusFormOpen} onClose={handleCloseInfusForm} level={slug[0]} />
-            )}
-        </div>
-    )
+			{isInfusFormOpen && (
+				<FormInfus
+					isOpen={isInfusFormOpen}
+					onClose={handleCloseInfusForm}
+					level={slug[0]}
+				/>
+			)}
+		</div>
+	);
 }

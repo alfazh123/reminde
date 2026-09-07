@@ -12,6 +12,7 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from ".
 import { dropFactorList } from "@/app/utils";
 import { addDoc, collection } from "firebase/firestore";
 import { db } from "@/app/firebase";
+import { Separator } from "./ui/separator";
 
 export default function FormInfus({isOpen, onClose, level}: {isOpen: boolean, onClose: () => void, level: string}) {
     const [form, setForm] = useState({
@@ -69,105 +70,140 @@ export default function FormInfus({isOpen, onClose, level}: {isOpen: boolean, on
     }
 
     return (
-        <Dialog open={isOpen} onOpenChange={onClose}>
-            <DialogContent className="sm:max-w-lg" showCloseButton={false}>
-            <form onSubmit={handleSubmit}>
-                <DialogHeader>
-                    <DialogTitle>Infus Form (Level {level})</DialogTitle>
-                </DialogHeader>
-                <FieldGroup>
-                    <Field>
-                        <Label htmlFor="room-id">Nomor Kamar</Label>
-                        <Input 
-                            id="room-id" 
-                            name="room-id" 
-                            placeholder="Masukkan nomor kamar" 
-                            onChange={(e) => setForm({...form, roomId: e.target.value})} 
-                            required
-                        />
-                    </Field>
-                    <Field>
-                        <Label htmlFor="start-time">Waktu Mulai</Label>
-                        <Input 
-                            id="start-time" 
-                            name="start-time" 
-                            type="datetime-local" 
-                            onChange={(e) => setForm({...form, startTime: new Date(e.target.value).getTime()})} 
-                            required
-                        />
-                    </Field>
-                    <Field>
-                        <Label htmlFor="range-time">Rentang Waktu (Jam)</Label>
-                        {/* Diubah menjadi type="number" step="any" agar perawat bisa isi angka jam/desimal */}
-                        <Input 
-                            id="range-time" 
-                            name="range-time" 
-                            type="number" 
-                            step="0.5"
-                            placeholder="Contoh: 4 (untuk 4 jam)" 
-                            onChange={(e) => setForm({...form, rangeHour: parseFloat(e.target.value) || 0})} 
-                            required
-                        />
-                    </Field>
-                    <Field>
-                        <Label htmlFor="volume">Volume (mL)</Label>
-                        <Input 
-                            id="volume" 
-                            name="volume" 
-                            type="number"
-                            placeholder="Masukkan volume infus" 
-                            onChange={(e) => setForm({...form, volume: Number(e.target.value)})} 
-                            required
-                        />
-                    </Field>
-                    <Field>
-                        <Label htmlFor="drop-factor">Drop Factor</Label>
-                        <Select
-                            items={dropFactorList}
-                            onValueChange={(value) =>
-                                setForm((prev) => ({
-                                    ...prev,
-                                    dropFactor: Number(value) || 20,
-                                }))
-                            }
-                        >
-                            <SelectTrigger>
-                                <SelectValue />
-                            </SelectTrigger>
-                            <SelectContent>
-                                {dropFactorList.map((item) => (
-                                    <SelectItem
-                                        key={item.value}
-                                        value={item.value}
-                                    >
-                                        {item.label}
-                                    </SelectItem>
-                                ))}
-                            </SelectContent>
-                        </Select>
-                    </Field>
-                </FieldGroup>
-                <DialogFooter>
-                    <DialogClose onClick={onClose} render={<Button variant="outline" type="button">Cancel</Button>} />
-                    <Button type="submit">Simpan Infus</Button>
-                </DialogFooter>
-                <DialogPrimitive.Close
-                    onClick={onClose}
-                    data-slot="dialog-close"
-                    render={
-                    <Button
-                        variant="ghost"
-                        className="absolute top-4 right-4 bg-secondary"
-                        size="icon-sm"
-                        type="button"
-                    />
-                    }
-                >
-                    <XIcon />
-                    <span className="sr-only">Close</span>
-                </DialogPrimitive.Close>
-            </form>
-            </DialogContent>
-        </Dialog>
-    )
+		<Dialog
+			open={isOpen}
+			onOpenChange={onClose}>
+			<DialogContent
+				className="sm:max-w-lg"
+				showCloseButton={false}>
+				<form
+					onSubmit={handleSubmit}
+					className="flex flex-col gap-2">
+					<DialogHeader>
+						<DialogTitle>Infus Form (Level {level})</DialogTitle>
+					</DialogHeader>
+					<Separator />
+					<FieldGroup>
+						<Field>
+							<Label htmlFor="room-id">Nomor Kamar</Label>
+							<Input
+								id="room-id"
+								name="room-id"
+								placeholder="Masukkan nomor kamar"
+								onChange={(e) =>
+									setForm({ ...form, roomId: e.target.value })
+								}
+								required
+							/>
+						</Field>
+						<Field>
+							<Label htmlFor="start-time">Waktu Mulai</Label>
+							<Input
+								id="start-time"
+								name="start-time"
+								type="datetime-local"
+								onChange={(e) =>
+									setForm({
+										...form,
+										startTime: new Date(
+											e.target.value,
+										).getTime(),
+									})
+								}
+								required
+							/>
+						</Field>
+						<Field>
+							<Label htmlFor="range-time">
+								Rentang Waktu (Jam)
+							</Label>
+							{/* Diubah menjadi type="number" step="any" agar perawat bisa isi angka jam/desimal */}
+							<Input
+								id="range-time"
+								name="range-time"
+								type="number"
+								step="0.5"
+								placeholder="Contoh: 4 (untuk 4 jam)"
+								onChange={(e) =>
+									setForm({
+										...form,
+										rangeHour:
+											parseFloat(e.target.value) || 0,
+									})
+								}
+								required
+							/>
+						</Field>
+						<Field>
+							<Label htmlFor="volume">Volume (mL)</Label>
+							<Input
+								id="volume"
+								name="volume"
+								type="number"
+								placeholder="Masukkan volume infus"
+								onChange={(e) =>
+									setForm({
+										...form,
+										volume: Number(e.target.value),
+									})
+								}
+								required
+							/>
+						</Field>
+						<Field>
+							<Label htmlFor="drop-factor">Drop Factor</Label>
+							<Select
+								items={dropFactorList}
+								onValueChange={(value) =>
+									setForm((prev) => ({
+										...prev,
+										dropFactor: Number(value) || 20,
+									}))
+								}>
+								<SelectTrigger>
+									<SelectValue />
+								</SelectTrigger>
+								<SelectContent>
+									{dropFactorList.map((item) => (
+										<SelectItem
+											key={item.value}
+											value={item.value}>
+											{item.label}
+										</SelectItem>
+									))}
+								</SelectContent>
+							</Select>
+						</Field>
+					</FieldGroup>
+					<DialogFooter>
+						<DialogClose
+							onClick={onClose}
+							render={
+								<Button
+									variant="outline"
+									type="button">
+									Cancel
+								</Button>
+							}
+						/>
+						<Button type="submit">Simpan Infus</Button>
+					</DialogFooter>
+					<DialogPrimitive.Close
+						onClick={onClose}
+						data-slot="dialog-close"
+						render={
+							<Button
+								variant="ghost"
+								className="absolute top-2 right-2 bg-secondary"
+								size="icon-sm"
+								type="button"
+							/>
+						}>
+						<XIcon />
+						<span className="sr-only">Close</span>
+					</DialogPrimitive.Close>
+				</form>
+			</DialogContent>
+		</Dialog>
+	);
 }
