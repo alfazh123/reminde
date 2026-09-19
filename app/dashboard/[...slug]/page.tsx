@@ -4,17 +4,16 @@ import { db } from "@/app/firebase";
 import { TableRowProps } from "@/app/type";
 import { columns } from "@/components/column";
 import { DataTable } from "@/components/data-table";
+import FormCateter from "@/components/form-cateter";
 import FormInfus from "@/components/form-infus";
 import HeaderIcons from "@/components/header-icons";
-import { Button } from "@/components/ui/button";
 import { collection, deleteDoc, doc, onSnapshot } from "firebase/firestore";
-import Image from "next/image";
 import { useParams, useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
 
 export default function Dashboard() {
     const [isInfusFormOpen, setIsInfusFormOpen] = useState(false);
-    const [isDetailInfoOpen, setIsDetailInfoOpen] = useState(false);
+    const [isCateterFormOpen, setIsCateterFormOpen] = useState(false);
     const [infusData, setInfusData] = useState<TableRowProps[]>([]);
     const router = useRouter();
 
@@ -25,6 +24,14 @@ export default function Dashboard() {
     const handleOpenInfusForm = () => {
         setIsInfusFormOpen(true);
     }
+
+    const handleCloseCateterForm = () => {
+		setIsCateterFormOpen(false);
+	};
+
+	const handleOpenCateterForm = () => {
+		setIsCateterFormOpen(true);
+	};
 
     const params = useParams();
     const slug = params?.slug || [];
@@ -89,6 +96,7 @@ export default function Dashboard() {
 					columns={columns(handleDelete)}
 					data={infusData}
 					handleOpenInfusForm={handleOpenInfusForm}
+					handleOpenCateterForm={handleOpenCateterForm}
 					levelValue={parseInt(level)}
 				/>
 			</div>
@@ -97,6 +105,13 @@ export default function Dashboard() {
 				<FormInfus
 					isOpen={isInfusFormOpen}
 					onClose={handleCloseInfusForm}
+					level={slug[0]}
+				/>
+			)}
+			{isCateterFormOpen && (
+				<FormCateter
+					isOpen={isCateterFormOpen}
+					onClose={handleCloseCateterForm}
 					level={slug[0]}
 				/>
 			)}
