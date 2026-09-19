@@ -25,11 +25,18 @@ import {
 } from "./ui/select";
 import { levelSections } from "@/app/utils";
 import Link from "next/link";
+import {
+	DropdownMenu,
+	DropdownMenuContent,
+	DropdownMenuItem,
+	DropdownMenuTrigger,
+} from "./ui/dropdown-menu";
 
 interface DataTableProps<TData extends RowData> {
 	columns: ColumnDef<DataTableFeatures, TData>[];
 	data: TData[];
 	handleOpenInfusForm: () => void;
+	handleOpenCateterForm: () => void;
 	levelValue: number | null;
 }
 
@@ -37,6 +44,7 @@ export function DataTable<TData extends RowData>({
 	columns,
 	data,
 	handleOpenInfusForm,
+	handleOpenCateterForm,
 	levelValue,
 }: DataTableProps<TData>) {
 	const [columnFilters, setColumnFilters] = useState<ColumnFiltersState>([]);
@@ -81,12 +89,19 @@ export function DataTable<TData extends RowData>({
 				</div>
 
 				<div className="flex flex-wrap gap-2 items-center">
-					<Button
-						variant="default"
-						className="w-fit"
-						onClick={handleOpenInfusForm}>
-						Add Data Infus
-					</Button>
+					<DropdownMenu>
+						<DropdownMenuTrigger
+							render={<Button variant="outline">Add Data</Button>}
+						/>
+						<DropdownMenuContent>
+							<DropdownMenuItem onClick={handleOpenInfusForm}>
+								Add Data Infus
+							</DropdownMenuItem>
+							<DropdownMenuItem onClick={handleOpenCateterForm}>
+								Add Data IV Cateter
+							</DropdownMenuItem>
+						</DropdownMenuContent>
+					</DropdownMenu>
 
 					<Select
 						items={levelSections}
@@ -96,16 +111,16 @@ export function DataTable<TData extends RowData>({
 						</SelectTrigger>
 						<SelectContent>
 							{levelSections.map((section) => (
-								<SelectItem
+								<Link
 									key={section.value}
-									value={section.value}
-									className="w-full h-full">
-									<Link
-										className="mr-2 w-full h-full"
-										href={`dashboard/${section.value}`}>
+									className="w-full h-fit"
+									href={`/dashboard/${section.value}`}>
+									<SelectItem
+										value={section.value}
+										className="w-full h-full">
 										{section.label}
-									</Link>
-								</SelectItem>
+									</SelectItem>
+								</Link>
 							))}
 						</SelectContent>
 					</Select>
