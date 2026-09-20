@@ -39,7 +39,7 @@ export const columns = (onDelete: (id: string) => void) =>
 				return (
 					<Badge
 						variant={category === "infus" ? "default" : "outline"}>
-						{category === "infus" ? "Infus" : "Cateter"}
+						{category === "infus" ? "Infus" : "IV Cateter"}
 					</Badge>
 				);
 			},
@@ -226,7 +226,12 @@ export const columns = (onDelete: (id: string) => void) =>
                         onClick={() => console.log("Detail clicked")}>
                         
                     </DropdownMenuItem> */}
-								<DetailInfo data={row.original} />
+								<DetailInfo
+									data={row.original}
+									cateter={
+										row.original.category === "cateter"
+									}
+								/>
 								{isDue && (
 									<DropdownMenuItem onClick={handleStopAlarm}>
 										Stop

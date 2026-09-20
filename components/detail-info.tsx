@@ -1,18 +1,35 @@
 import { TableRowProps } from "@/app/type";
-import { Dialog, DialogClose, DialogContent, DialogFooter, DialogHeader, DialogTitle, DialogTrigger } from "./ui/dialog";
+import {
+	Dialog,
+	DialogClose,
+	DialogContent,
+	DialogFooter,
+	DialogHeader,
+	DialogTitle,
+	DialogTrigger,
+} from "./ui/dialog";
 import { Separator } from "./ui/separator";
 import { Field, FieldGroup } from "./ui/field";
 import { Label } from "./ui/label";
 import { Input } from "./ui/input";
 import { Button } from "./ui/button";
 
-export default function DetailInfo({ data }: { data: TableRowProps }) {
-    return (
+export default function DetailInfo({
+	data,
+	cateter,
+}: {
+	data: TableRowProps;
+	cateter: boolean;
+}) {
+	return (
 		<Dialog>
 			<DialogTrigger className="m-1 text-sm">Detail</DialogTrigger>
 			<DialogContent className="sm:max-w-lg">
 				<DialogHeader>
-					<DialogTitle>Infus info (kamar {data.roomId})</DialogTitle>
+					<DialogTitle>
+						{cateter ? "IV Cateter" : "Infus"} info (kamar{" "}
+						{data.roomId})
+					</DialogTitle>
 				</DialogHeader>
 				<Separator />
 				<FieldGroup>
@@ -51,27 +68,31 @@ export default function DetailInfo({ data }: { data: TableRowProps }) {
 							value={data.rangeTime}
 						/>
 					</Field>
-					<Field>
-						<Label htmlFor="volume">Volume (mL)</Label>
-						<Input
-							id="volume"
-							name="volume"
-							// type="number"
-							placeholder="0"
-							disabled
-							value={`${data.volume}ml`}
-						/>
-					</Field>
-					<Field>
-						<Label htmlFor="drop-factor">Drop Factor</Label>
-						<Input
-							id="drop-factor"
-							name="drop-factor"
-							placeholder="0"
-							disabled
-							value={data.dropFactor}
-						/>
-					</Field>
+					{!cateter && (
+						<>
+							<Field>
+								<Label htmlFor="volume">Volume (mL)</Label>
+								<Input
+									id="volume"
+									name="volume"
+									// type="number"
+									placeholder="0"
+									disabled
+									value={`${data.volume}ml`}
+								/>
+							</Field>
+							<Field>
+								<Label htmlFor="drop-factor">Drop Factor</Label>
+								<Input
+									id="drop-factor"
+									name="drop-factor"
+									placeholder="0"
+									disabled
+									value={data.dropFactor}
+								/>
+							</Field>
+						</>
+					)}
 				</FieldGroup>
 				<DialogFooter>
 					<DialogClose

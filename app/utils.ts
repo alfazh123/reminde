@@ -202,5 +202,5 @@ export const levelSections = [
 export const categoryFilter = [
 	{ label: "Select Category", value: null },
 	{ label: "Infus", value: "infus" },
-	{ label: "Cateter", value: "cateter" },
+	{ label: "IV Cateter", value: "cateter" },
 ];
