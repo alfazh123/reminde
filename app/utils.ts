@@ -190,11 +190,17 @@ export const dropFactorList = [
 ];
 
 export const levelSections = [
-	{ label: "Select Level", value: null },
+	{ label: "Select Nurse station", value: null },
 	{ label: "GDH I Lt 1", value: 1 },
 	{ label: "GDH I Lt 2", value: 2 },
 	{ label: "GDH I Lt 3", value: 3 },
 	{ label: "GDH II Lt 3", value: 4 },
 	{ label: "GDH II Lt 4", value: 5 },
 	{ label: "GDH II Lt 5", value: 6 },
+];
+
+export const categoryFilter = [
+	{ label: "Select Category", value: null },
+	{ label: "Infus", value: "infus" },
+	{ label: "Cateter", value: "cateter" },
 ];
