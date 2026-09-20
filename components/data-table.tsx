@@ -23,7 +23,7 @@ import {
 	SelectTrigger,
 	SelectValue,
 } from "./ui/select";
-import { levelSections } from "@/app/utils";
+import { categoryFilter, levelSections } from "@/app/utils";
 import Link from "next/link";
 import {
 	DropdownMenu,
@@ -49,6 +49,17 @@ export function DataTable<TData extends RowData>({
 }: DataTableProps<TData>) {
 	const [columnFilters, setColumnFilters] = useState<ColumnFiltersState>([]);
 	const [globalFilter, setGlobalFilter] = useState("");
+	const [category, setCategory] = useState<string | null>(null);
+
+	const handleCategoryChange = (val: string | null) => {
+		// if (val === null) {
+		// 	setCategory(null);
+		// 	table.getColumn("category")?.setFilterValue("");
+		// 	return;
+		// }
+		setCategory(val);
+		table.getColumn("category")?.setFilterValue(val === "all" ? "" : val);
+	};
 
 	const table = useTable({
 		features,
@@ -59,15 +70,12 @@ export function DataTable<TData extends RowData>({
 			columnFilters,
 			globalFilter,
 		},
-		globalFilterFn: (row, columnId, filterValue) => {
+		globalFilterFn: (row, filterValue) => {
 			const search = String(filterValue).toLowerCase();
 
-			const runId = String(row.getValue("roomId") ?? "").toLowerCase();
-			const targetModel = String(
-				row.getValue("name") ?? "",
-			).toLowerCase();
+			const roomId = String(row.getValue("roomId") ?? "").toLowerCase();
 
-			return runId.includes(search) || targetModel.includes(search);
+			return roomId.includes(search);
 		},
 	});
 
@@ -79,7 +87,7 @@ export function DataTable<TData extends RowData>({
 				<div className="flex w-fit items-center bg-input/50 rounded-md px-2 py-1 focus:ring-1 focus:ring-ring/50 focus-within:ring-1 focus-within:ring-ring/50">
 					<Search className="h-4 w-4 text-muted-foreground" />
 					<Input
-						placeholder="Filter by ID or Target model"
+						placeholder="Search Room ID"
 						value={globalFilter}
 						onChange={(event) =>
 							setGlobalFilter(event.target.value)
@@ -91,7 +99,7 @@ export function DataTable<TData extends RowData>({
 				<div className="flex flex-wrap gap-2 items-center">
 					<DropdownMenu>
 						<DropdownMenuTrigger
-							render={<Button variant="outline">Add Data</Button>}
+							render={<Button variant="default">Add Data</Button>}
 						/>
 						<DropdownMenuContent>
 							<DropdownMenuItem onClick={handleOpenInfusForm}>
@@ -102,6 +110,27 @@ export function DataTable<TData extends RowData>({
 							</DropdownMenuItem>
 						</DropdownMenuContent>
 					</DropdownMenu>
+
+					<Select
+						items={categoryFilter}
+						onValueChange={(value) =>
+							handleCategoryChange(value ?? null)
+						}
+						value={category}>
+						<SelectTrigger className="w-48">
+							<SelectValue />
+						</SelectTrigger>
+						<SelectContent>
+							{categoryFilter.map((section) => (
+								<SelectItem
+									key={section.value}
+									value={section.value}
+									className="w-full h-full">
+									{section.label}
+								</SelectItem>
+							))}
+						</SelectContent>
+					</Select>
 
 					<Select
 						items={levelSections}

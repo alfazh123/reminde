@@ -38,9 +38,7 @@ export const columns = (onDelete: (id: string) => void) =>
 				const category = getValue() as string;
 				return (
 					<Badge
-						variant={
-							category === "infus" ? "default" : "outline"
-						}>
+						variant={category === "infus" ? "default" : "outline"}>
 						{category === "infus" ? "Infus" : "Cateter"}
 					</Badge>
 				);
@@ -76,25 +74,44 @@ export const columns = (onDelete: (id: string) => void) =>
 		}),
 		columnHelper.accessor("volume", {
 			header: "Volume",
-			cell: ({ getValue }) => {
+			cell: ({ getValue, row }) => {
 				const volume = getValue() as string;
 				return (
 					<span className="flex items-center justify-center gap-2">
-						<p>{volume} ml</p>
+						{row.original.category === "infus" ? (
+							<p>{volume} ml</p>
+						) : (
+							<p></p>
+						)}
 					</span>
 				);
 			},
 		}),
 		columnHelper.accessor("dropFactor", {
 			header: "Drop Factor",
+			cell: ({ getValue, row }) => {
+				return (
+					<span className="flex items-center justify-center gap-2">
+						{row.original.category === "infus" ? (
+							<p>{row.original.dropFactor}</p>
+						) : (
+							<p></p>
+						)}
+					</span>
+				);
+			},
 		}),
 		columnHelper.accessor("result", {
 			header: "Hasil",
-			cell: ({ getValue }) => {
+			cell: ({ getValue, row }) => {
 				const result = getValue() as string;
 				return (
 					<span className="flex items-center justify-center gap-2">
-						<p>{result} tpm</p>
+						{row.original.category === "infus" ? (
+							<p>{result} tpm</p>
+						) : (
+							<p></p>
+						)}
 					</span>
 				);
 			},

@@ -44,7 +44,7 @@ export default function FormCateter({isOpen, onClose, level}: {isOpen: boolean, 
             // 3. Simpan ke Firestore (Collection otomatis dibuat jika belum ada)
             await addDoc(collection(db, collectionName), cateterData);
 
-            console.log("Data Infus Berhasil Disimpan ke:", collectionName);
+            console.log("Data Cateter Berhasil Disimpan ke:", collectionName);
             
             // Karena Dashboard Anda menggunakan onSnapshot, data di tabel 
             // akan otomatis sinkron tanpa perlu setInfusData manual lagi.
@@ -66,7 +66,7 @@ export default function FormCateter({isOpen, onClose, level}: {isOpen: boolean, 
 					onSubmit={handleSubmit}
 					className="flex flex-col gap-2">
 					<DialogHeader>
-						<DialogTitle>Infus Form (Level {level})</DialogTitle>
+						<DialogTitle>Cateter Form (Level {level})</DialogTitle>
 					</DialogHeader>
 					<Separator />
 					<FieldGroup>
@@ -111,7 +111,7 @@ export default function FormCateter({isOpen, onClose, level}: {isOpen: boolean, 
 								</Button>
 							}
 						/>
-						<Button type="submit">Simpan Infus</Button>
+						<Button type="submit">Simpan Cateter</Button>
 					</DialogFooter>
 					<DialogPrimitive.Close
 						onClick={onClose}
